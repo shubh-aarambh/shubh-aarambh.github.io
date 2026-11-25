@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Shubh Shukla — Formal Resume</title>
+  <style>
+    @page {
+      size: A4 portrait;
+      margin: 0;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html, body {
+      width: 210mm;
+      height: 297mm;
+      background: #ffffff;
+      color: #111827;
+      font-family: "Georgia", "Cambria", "Times New Roman", serif;
+      font-size: 9.2pt;
+      line-height: 1.32;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+
+    .page {
+      width: 210mm;
+      height: 297mm;
+      padding: 10mm 14mm 10mm 14mm;
+      overflow: hidden;
+    }
+
+    a {
+      color: #1e3a8a;
+      text-decoration: none;
+    }
+
+    /* Header */
+    .header {
+      text-align: center;
+      margin-bottom: 6pt;
+    }
+
+    .name {
+      font-size: 20.5pt;
+      font-weight: 700;
+      letter-spacing: 0.9pt;
+      color: #090d16;
+      line-height: 1.06;
+    }
+
+    .subtitle {
+      font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+      font-size: 8.5pt;
+      font-weight: 600;
+      color: #374151;
+      letter-spacing: 0.5pt;
+      text-transform: uppercase;
+      margin-top: 2.5pt;
+    }
+
+    .contact-row {
+      font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+      font-size: 8.2pt;
+      color: #1f2937;
+      margin-top: 3pt;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 3.5pt 7pt;
+    }
+
+    .sep {
+      color: #9ca3af;
+    }
+
+    /* Section Headings */
+    .section {
+      margin-top: 6.5pt;
+    }
+
+    .section-title {
+      font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+      font-size: 9pt;
+      font-weight: 700;
+      letter-spacing: 0.85pt;
+      text-transform: uppercase;
+      color: #0f172a;
+      border-bottom: 1pt solid #111827;
+      padding-bottom: 1.5pt;
+      margin-bottom: 4pt;
+    }
+
+    /* Summary */
+    .summary {
+      font-size: 8.8pt;
+      color: #1f2937;
+      text-align: justify;
+      line-height: 1.32;
+    }
+
+    /* Education */
+    .edu-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 8pt;
+    }
+
+    .edu-school {
+      font-weight: 700;
+      font-size: 9.4pt;
+      color: #090d16;
+    }
+
+    .edu-meta {
+      font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+      font-size: 8.1pt;
+      color: #374151;
+      white-space: nowrap;
+    }
+
+    .edu-degree {
+      font-style: italic;
+      font-size: 8.85pt;
+      color: #1f2937;
+    }
+
+    .coursework {
+      font-size: 8.35pt;
+      color: #374151;
+      margin-top: 1.5pt;
+    }
+
+    /* Skills Table */
+    .skills-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 2pt;
+    }
+
+    .skills-list li {
+      font-size: 8.55pt;
+      line-height: 1.28;
+      color: #1f2937;
+    }
+
+    .skill-cat {
+      font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+      font-weight: 700;
+      font-size: 8.2pt;
+      color: #090d16;
+    }
+
+    /* Flagship Projects */
+    .project {
+      margin-bottom: 5.2pt;
+    }
+
+    .project:last-child {
+      margin-bottom: 0;
+    }
+
+    .proj-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 8pt;
+    }
+
+    .proj-title-wrap {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: baseline;
+      gap: 4.5pt;
+    }
+
+    .proj-title {
+      font-weight: 700;
+      font-size: 9.35pt;
+      color: #090d16;
+    }
+
+    .proj-links {
+      font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+      font-size: 7.75pt;
+      font-weight: 600;
+    }
+
+    .proj-date {
+      font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+      font-size: 8pt;
+      color: #374151;
+      white-space: nowrap;
+    }
+
+    .proj-stack {
+      font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+      font-size: 7.85pt;
+      font-style: italic;
+      color: #374151;
+      margin-top: 0.4pt;
+      margin-bottom: 2pt;
+    }
+
+    .bullets {
+      padding-left: 12.5pt;
+      margin: 0;
+    }
+
+    .bullets li {
+      font-size: 8.55pt;
+      line-height: 1.29;
+      color: #1f2937;
+      margin-bottom: 1.4pt;
+    }
+
+    .bullets li:last-child {
+      margin-bottom: 0;
+    }
+
+    .bullets strong {
+      color: #090d16;
+      font-weight: 700;
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <div>
+      <!-- Header -->
+      <header class="header">
+        <div class="name">SHUBH SHUKLA</div>
+        <div class="subtitle">Software Engineering &bull; AI Systems &amp; RAG &bull; Cloud-Native DevOps</div>
+        <div class="contact-row">
+          <span>Bengaluru, Karnataka, India</span>
+          <span class="sep">|</span>
+          <a href="mailto:shubhshukla1006@gmail.com">shubhshukla1006@gmail.com</a>
+          <span class="sep">|</span>
+          <a href="https://github.com/shubh-aarambh">github.com/shubh-aarambh</a>
+          <span class="sep">|</span>
+          <a href="https://www.linkedin.com/in/shubh-shukla-94b03830a/">linkedin.com/in/shubh-shukla-94b03830a</a>
+        </div>
+      </header>
+
+      <!-- Professional Summary -->
+      <section class="section">
+        <h2 class="section-title">Professional Summary</h2>
+        <p class="summary">
+          Computer Science undergraduate at Scaler School of Technology specializing in Full-Stack Engineering, Autonomous AI Agents, Distributed Systems, and Cloud-Native DevOps. Demonstrated experience designing, building, and deploying end-to-end production systems including AWS EKS Kubernetes clusters, Playwright LLM automation agents, consistent-hashing autocomplete engines, and full-stack MERN and Spring Boot applications.
+        </p>
+      </section>
+
+      <!-- Education -->
+      <section class="section">
+        <h2 class="section-title">Education</h2>
+        <div class="edu-row">
+          <span class="edu-school">Scaler School of Technology</span>
+          <span class="edu-meta">Bengaluru, India &bull; 2024 &ndash; 2028</span>
+        </div>
+        <div class="edu-row">
+          <span class="edu-degree">Bachelor of Science (B.Sc.) in Computer Science</span>
+          <span class="edu-meta">Enrollment: 24bcs10093</span>
+        </div>
+        <p class="coursework">
+          <strong>Core Coursework:</strong> High-Level &amp; Low-Level System Design (HLD/LLD), DevOps &amp; Cloud Infrastructure, Computer Networks, Relational &amp; NoSQL Databases, Generative AI &amp; RAG Pipelines, Data Structures &amp; Algorithms.
+        </p>
+      </section>
+
+      <!-- Technical Skills -->
+      <section class="section">
+        <h2 class="section-title">Technical Skills</h2>
+        <ul class="skills-list">
+          <li><span class="skill-cat">Languages:</span> TypeScript, JavaScript (ES6+), Python, Java (11/17), C++11, Go (in progress), SQL, Bash/Shell, HCL (Terraform)</li>
+          <li><span class="skill-cat">AI &amp; Backend Engineering:</span> LangChain, Qdrant Vector DB, Playwright, Groq (Llama-3.1), Google Gemini AI, OpenAI SDK, FastAPI, Spring Boot 3, Spring Data JPA/JPQL, Node.js, Express 5, Prisma, WebSockets, REST APIs, JWT Auth</li>
+          <li><span class="skill-cat">Cloud, DevOps &amp; Databases:</span> AWS (EKS, ELB Ingress, VPC), Kubernetes, Docker &amp; Compose, Terraform, Helm, Prometheus, GitHub Actions CI/CD, Linux, PostgreSQL, MongoDB, SQLite, H2</li>
+          <li><span class="skill-cat">Frontend Frameworks:</span> React 19, Next.js 16, Vite, Tailwind CSS, Framer Motion, Zustand, shadcn/ui, Recharts</li>
+        </ul>
+      </section>
+
+      <!-- Flagship Projects Only -->
+      <section class="section">
+        <h2 class="section-title">Flagship Projects</h2>
+
+        <article class="project">
+          <div class="proj-header">
+            <div class="proj-title-wrap">
+              <span class="proj-title">StudyTrack &mdash; Cloud-Native DevOps Platform</span>
+              <span class="proj-links">
+                [<a href="https://github.com/shubh-aarambh/Study-Track">GitHub</a>]
+                [<a href="http://a554166002e3d4c6bbb0bde1c641c9c1-147430934.ap-south-1.elb.amazonaws.com/">Live AWS</a>]
+              </span>
+            </div>
+            <span class="proj-date">Oct 2026</span>
+          </div>
+          <div class="proj-stack">AWS EKS, Terraform (HCL), Kubernetes, Helm, Docker, FastAPI, React, PostgreSQL, Prometheus, GitHub Actions</div>
+          <ul class="bullets">
+            <li>Architected and deployed a cloud-native coursework and deadline management SaaS live on <strong>AWS EKS (ap-south-1)</strong> behind an ELB Ingress controller with interactive Swagger REST API documentation (<code>/docs</code>).</li>
+            <li>Automated VPC networking, EKS cluster provisioning, and containerized rollouts using <strong>Terraform</strong>, <strong>Helm charts</strong>, multi-stage <strong>Dockerfiles</strong>, <strong>GitHub Actions CI/CD</strong>, <strong>PostgreSQL</strong> storage, and <strong>Prometheus</strong> metrics scraping.</li>
+          </ul>
+        </article>
+
+        <article class="project">
+          <div class="proj-header">
+            <div class="proj-title-wrap">
+              <span class="proj-title">Auto-HainJi &mdash; Autonomous Browser Automation Agent</span>
+              <span class="proj-links">[<a href="https://github.com/shubh-aarambh/Auto-HainJi">GitHub</a>]</span>
+            </div>
+            <span class="proj-date">Jun 2026</span>
+          </div>
+          <div class="proj-stack">Next.js 16, TypeScript, Playwright, Groq (Llama), Google Gemini, OpenAI, Prisma, SQLite, WebSockets, Zustand</div>
+          <ul class="bullets">
+            <li>Engineered an autonomous web automation agent featuring a <strong>hybrid deterministic-first planner</strong> that executes known actions at low latency and triggers <strong>Groq / Gemini / OpenAI</strong> fallback for self-healing recovery.</li>
+            <li>Implemented a decoupled <strong>Event Bus</strong> streaming real-time telemetry over <strong>WebSockets</strong>, a composable <strong>Tool Registry</strong>, and a step-by-step <code>/replay</code> debugger persisting DOM states and screenshots in <strong>SQLite via Prisma</strong>.</li>
+          </ul>
+        </article>
+
+        <article class="project">
+          <div class="proj-header">
+            <div class="proj-title-wrap">
+              <span class="proj-title">Search Typeahead &amp; Distributed Telemetry System (HLD)</span>
+              <span class="proj-links">[<a href="https://github.com/shubh-aarambh/HLD">GitHub</a>]</span>
+            </div>
+            <span class="proj-date">Jun 2026</span>
+          </div>
+          <div class="proj-stack">TypeScript, Node.js, Express, Consistent Hashing (MD5), Trie Structures, Docker Compose</div>
+          <ul class="bullets">
+            <li>Implemented a high-throughput distributed autocomplete engine delivering sub-millisecond prefix lookups via an <strong>MD5 Consistent Hash Ring</strong> routing queries across sharded in-memory prefix nodes.</li>
+            <li>Decoupled heavy write ingestion using asynchronous <strong>batch writes</strong> and designed <strong>recency-aware ranking</strong> alongside a containerized Docker deployment and live analytics telemetry dashboard.</li>
+          </ul>
+        </article>
+
+        <article class="project">
+          <div class="proj-header">
+            <div class="proj-title-wrap">
+              <span class="proj-title">NotebookLM 2.0 &mdash; Full-Stack RAG Document Intelligence Suite</span>
+              <span class="proj-links">[<a href="https://github.com/shubh-aarambh/GenAi-3AD">GitHub</a>] [<a href="https://github.com/shubh-aarambh/GenAi-3">Next.js UI</a>]</span>
+            </div>
+            <span class="proj-date">May &ndash; Jun 2026</span>
+          </div>
+          <div class="proj-stack">Next.js 16, Express 5, LangChain, Qdrant Vector DB, Groq Llama-3.1, OpenAI Embeddings, PDF.js, Tavily Search</div>
+          <ul class="bullets">
+            <li>Built a full-stack <strong>Retrieval-Augmented Generation (RAG)</strong> platform supporting unseen PDF/TXT ingestion, recursive text chunking, dense vector embedding generation, and cosine similarity retrieval in <strong>Qdrant</strong>.</li>
+            <li>Delivered low-latency grounded conversational responses using <strong>Groq llama-3.1-8b-instant</strong> with automatic <strong>Tavily / DuckDuckGo web-search fallback</strong> when uploaded documents do not contain the answer.</li>
+          </ul>
+        </article>
+
+        <article class="project">
+          <div class="proj-header">
+            <div class="proj-title-wrap">
+              <span class="proj-title">Reserve-Space &mdash; Campus Resource &amp; Room Booking Platform</span>
+              <span class="proj-links">
+                [<a href="https://github.com/shubh-aarambh/room_allocation">GitHub</a>]
+                [<a href="https://reserve-space.vercel.app/">Live Vercel</a>]
+              </span>
+            </div>
+            <span class="proj-date">Oct 2025</span>
+          </div>
+          <div class="proj-stack">React, Vite, Tailwind CSS, Node.js, Express, MongoDB, Mongoose, JWT, bcryptjs</div>
+          <ul class="bullets">
+            <li>Developed and deployed a full-stack <strong>MERN</strong> web platform enabling students and administrators to browse, schedule, and govern campus rooms, laboratories, and shared equipment without booking conflicts.</li>
+            <li>Secured endpoints with <strong>JWT</strong> and <strong>bcryptjs</strong> authentication, built a dedicated <strong>Admin Dashboard</strong> for user/resource oversight, automated initial database seeding, and deployed the responsive frontend live on <strong>Vercel</strong>.</li>
+          </ul>
+        </article>
+
+        <article class="project">
+          <div class="proj-header">
+            <div class="proj-title-wrap">
+              <span class="proj-title">Library Manager &mdash; Spring Boot &amp; Relational JPA Application</span>
+              <span class="proj-links">[<a href="https://github.com/shubh-aarambh/db-bits-sga-2">GitHub</a>]</span>
+            </div>
+            <span class="proj-date">May 2026</span>
+          </div>
+          <div class="proj-stack">Java 11, Spring Boot, Spring MVC, Spring Data JPA, JPQL, H2 Database, JSP, JUnit</div>
+          <ul class="bullets">
+            <li>Built a relational Books &amp; Authors CRUD web suite modeling <code>@OneToMany</code> JPA relationships with cascading deletes and <strong>custom JPQL INNER JOIN</strong> queries unifying entity views.</li>
+            <li>Engineered global exception handlers (duplicate ISBN integrity and missing resource handling), automated 10&times;10 dataset seeding, integrated <code>/h2-console</code> database inspection, and wrote unit tests for repository/service layers.</li>
+          </ul>
+        </article>
+      </section>
+    </div>
+  </div>
+</body>
+</html>

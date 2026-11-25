@@ -1,0 +1,190 @@
+@import "tailwindcss";
+
+@theme {
+  --font-display: "Syne", "Space Grotesk", system-ui, sans-serif;
+  --font-heading: "Space Grotesk", system-ui, sans-serif;
+  --font-sans: "Plus Jakarta Sans", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+}
+
+:root {
+  --bg-primary: #05070c;
+  --bg-secondary: #0b0f19;
+  --bg-card: rgba(13, 18, 30, 0.72);
+  --bg-card-hover: rgba(18, 25, 42, 0.88);
+  --border-subtle: rgba(148, 163, 184, 0.14);
+  --border-strong: rgba(148, 163, 184, 0.28);
+  --text-primary: #f8fafc;
+  --text-secondary: #94a3b8;
+  --text-muted: #64748b;
+
+  /* Dynamic accent variables (default: cyan) */
+  --accent: #22d3ee;
+  --accent-rgb: 34, 211, 238;
+  --accent-secondary: #f59e0b;
+  --accent-secondary-rgb: 245, 158, 11;
+  --grid-color: rgba(148, 163, 184, 0.055);
+}
+
+html.light {
+  --bg-primary: #f6f7fb;
+  --bg-secondary: #eef1f7;
+  --bg-card: rgba(255, 255, 255, 0.84);
+  --bg-card-hover: rgba(255, 255, 255, 0.96);
+  --border-subtle: rgba(15, 23, 42, 0.1);
+  --border-strong: rgba(15, 23, 42, 0.2);
+  --text-primary: #090d16;
+  --text-secondary: #475569;
+  --text-muted: #64748b;
+  --grid-color: rgba(15, 23, 42, 0.045);
+}
+
+html[data-accent="amber"] {
+  --accent: #f59e0b;
+  --accent-rgb: 245, 158, 11;
+  --accent-secondary: #fb7185;
+  --accent-secondary-rgb: 251, 113, 133;
+}
+
+html[data-accent="emerald"] {
+  --accent: #10b981;
+  --accent-rgb: 16, 185, 129;
+  --accent-secondary: #38bdf8;
+  --accent-secondary-rgb: 56, 189, 248;
+}
+
+html[data-accent="violet"] {
+  --accent: #a78bfa;
+  --accent-rgb: 167, 139, 250;
+  --accent-secondary: #22d3ee;
+  --accent-secondary-rgb: 34, 211, 238;
+}
+
+html {
+  scroll-behavior: smooth;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  font-family: var(--font-sans);
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  overflow-x: hidden;
+  transition: background-color 0.35s ease, color 0.35s ease;
+}
+
+/* Architectural Blueprint Grid Background */
+.bg-blueprint {
+  background-image:
+    linear-gradient(to right, var(--grid-color) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--grid-color) 1px, transparent 1px);
+  background-size: 48px 48px;
+}
+
+/* Subtle film grain noise overlay */
+.noise-overlay {
+  background-image: radial-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 0);
+  background-size: 24px 24px;
+}
+
+/* Accent utilities */
+.text-accent {
+  color: var(--accent);
+}
+
+.bg-accent {
+  background-color: var(--accent);
+}
+
+.border-accent {
+  border-color: rgba(var(--accent-rgb), 0.45);
+}
+
+.glow-accent {
+  box-shadow: 0 0 40px -10px rgba(var(--accent-rgb), 0.45);
+}
+
+.text-gradient-hero {
+  background: linear-gradient(
+    115deg,
+    var(--text-primary) 15%,
+    var(--accent) 55%,
+    var(--accent-secondary) 95%
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* Custom sleek scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-primary);
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(var(--accent-rgb), 0.25);
+  border-radius: 999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(var(--accent-rgb), 0.5);
+}
+
+/* Marquee infinite animation */
+@keyframes marquee {
+  0% {
+    transform: translateX(0%);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-marquee {
+  display: flex;
+  width: max-content;
+  animation: marquee 34s linear infinite;
+}
+
+.animate-marquee:hover {
+  animation-play-state: paused;
+}
+
+@keyframes pulse-ring {
+  0% {
+    transform: scale(0.95);
+    opacity: 0.7;
+  }
+  70% {
+    transform: scale(1.12);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1.12);
+    opacity: 0;
+  }
+}
+
+.animate-pulse-ring {
+  animation: pulse-ring 2.4s cubic-bezier(0.215, 0.61, 0.355, 1) infinite;
+}
+
+@media print {
+  body {
+    background: #ffffff !important;
+    color: #000000 !important;
+  }
+  header,
+  main {
+    display: none !important;
+  }
+}
+
