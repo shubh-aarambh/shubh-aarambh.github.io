@@ -535,11 +535,36 @@ const LibraryPreview: React.FC = () => {
   );
 };
 
-/* 7. Go Project — Live GitHub Auto-Sync & Goroutine Pipeline Preview */
-const GolangSyncPreview: React.FC<{ goSync?: PreviewProps['goSync'] }> = ({
-  goSync,
-}) => {
-  const detected = !!goSync?.detected;
+/* 7. PulseMatrix AI — Interactive Go 1.22 SMS AI Parser & Webhook Engine */
+const SMS_SAMPLES = [
+  {
+    raw: 'Debited Rs. 2,499 at Starbucks India via GPay UPI',
+    merchant: 'Starbucks India',
+    category: 'Dining & Coffee',
+    fx: '₹2,499 → $29.75 USD',
+    anomaly: 'NORMAL · 14ms Go parse',
+    flagged: false,
+  },
+  {
+    raw: 'Charged $189.00 at AWS Cloud Services via Stripe',
+    merchant: 'AWS Cloud Services',
+    category: 'Cloud Infra',
+    fx: '$189.00 → ₹15,876 INR',
+    anomaly: 'SPIKE +62% · ANOMALY ALERT',
+    flagged: true,
+  },
+];
+
+const WEBHOOK_FEED = [
+  { provider: 'GPay UPI', merchant: 'Swiggy Instamart', amt: '₹640', status: '200 OK' },
+  { provider: 'PhonePe', merchant: 'Netflix Recurring', amt: '₹649', status: 'SUB DETECTED' },
+  { provider: 'Stripe', merchant: 'Vercel Pro Plan', amt: '$20.00', status: 'FX SYNCED' },
+];
+
+const GolangSyncPreview: React.FC<{ goSync?: PreviewProps['goSync'] }> = () => {
+  const [tab, setTab] = useState<'sms' | 'webhooks'>('sms');
+  const [smsIdx, setSmsIdx] = useState(0);
+  const current = SMS_SAMPLES[smsIdx];
 
   return (
     <div
@@ -547,57 +572,101 @@ const GolangSyncPreview: React.FC<{ goSync?: PreviewProps['goSync'] }> = ({
       className="flex h-full flex-col justify-between rounded-xl border border-[var(--border-subtle)] bg-[#060a14] p-4 font-mono text-xs text-slate-200"
     >
       <div className="flex items-center justify-between gap-2">
-        <span
-          className={`inline-flex items-center gap-1.5 text-[11px] ${
-            detected ? 'text-emerald-400' : 'text-amber-300'
-          }`}
-        >
+        <span className="inline-flex items-center gap-1.5 text-[11px] text-emerald-400">
           <Radio className="h-3.5 w-3.5 animate-pulse" />
-          {detected ? 'GO REPO SYNCED LIVE' : 'GITHUB GO PUSH WATCHER'}
+          GO 1.22 · PULSEMATRIX AI
         </span>
-        <button
-          type="button"
-          onClick={() => goSync?.onSync()}
-          disabled={goSync?.syncing}
-          className="inline-flex cursor-pointer items-center gap-1 rounded bg-white/10 px-2 py-0.5 text-[10px] text-slate-200 transition-colors hover:bg-accent/20 hover:text-accent disabled:opacity-50"
-        >
-          <RefreshCw
-            className={`h-2.5 w-2.5 ${goSync?.syncing ? 'animate-spin' : ''}`}
-          />
-          {goSync?.syncing ? 'Checking...' : 'Sync Now'}
-        </button>
+        <div className="flex gap-1">
+          {(['sms', 'webhooks'] as const).map((mode) => (
+            <button
+              key={mode}
+              type="button"
+              onClick={() => setTab(mode)}
+              className={`cursor-pointer rounded px-2 py-0.5 text-[10px] uppercase transition-colors ${
+                tab === mode
+                  ? 'bg-accent font-bold text-slate-950'
+                  : 'bg-white/10 text-slate-300 hover:bg-white/20'
+              }`}
+            >
+              {mode === 'sms' ? 'SMS AI' : 'Webhooks'}
+            </button>
+          ))}
+        </div>
       </div>
 
-      {/* Go Code / Telemetry Block */}
-      <div className="my-3 rounded-lg border border-white/10 bg-black/50 p-3 text-[11px] leading-relaxed">
-        <div className="text-slate-400">// github.com/shubh-aarambh</div>
-        <div>
-          <span className="text-cyan-400">package</span>{' '}
-          <span className="text-white">main</span>
-        </div>
-        <div className="mt-1">
-          <span className="text-cyan-400">func</span>{' '}
-          <span className="text-amber-300">watchPush</span>() {'{'}
-        </div>
-        <div className="pl-3 text-slate-300">
-          status := <span className="text-emerald-400">&quot;{detected ? 'PUSHED_LIVE' : 'BUILDING_IN_GO'}&quot;</span>
-        </div>
-        <div className="pl-3 text-slate-300">
-          repo := <span className="text-accent">&quot;{goSync?.repoName || 'awaiting git push'}&quot;</span>
-        </div>
-        <div>{'}'}</div>
-      </div>
+      {tab === 'sms' ? (
+        <>
+          <div className="mt-2.5 grid grid-cols-2 gap-1.5">
+            {['GPay SMS', 'Spike SMS'].map((label, i) => (
+              <button
+                key={label}
+                type="button"
+                onClick={() => setSmsIdx(i)}
+                className={`cursor-pointer rounded-lg border px-2 py-1 text-[10px] transition-all ${
+                  smsIdx === i
+                    ? 'border-accent bg-accent/15 font-semibold text-white'
+                    : 'border-white/10 bg-white/[0.02] text-slate-400 hover:border-white/25'
+                }`}
+              >
+                Test: {label}
+              </button>
+            ))}
+          </div>
 
-      <div className="flex items-center justify-between rounded-md bg-black/40 px-2.5 py-1.5 text-[10px]">
-        <span className={detected ? 'text-emerald-400' : 'text-amber-300'}>
-          {detected
-            ? '✓ Auto-promoted to Flagship!'
-            : '● Auto-highlights on first Go git push'}
-        </span>
-        {goSync?.lastChecked && (
-          <span className="text-slate-500">@{goSync.lastChecked}</span>
-        )}
-      </div>
+          <div className="my-2.5 rounded-lg border border-white/10 bg-black/50 p-2.5 text-[11px]">
+            <div className="truncate text-[10px] text-slate-400">
+              SMS: &quot;{current.raw}&quot;
+            </div>
+            <div className="mt-2 grid grid-cols-2 gap-1.5 text-[10px]">
+              <div className="rounded bg-white/[0.04] px-2 py-1">
+                <span className="text-slate-400">Merchant: </span>
+                <span className="text-white">{current.merchant}</span>
+              </div>
+              <div className="rounded bg-white/[0.04] px-2 py-1">
+                <span className="text-slate-400">FX: </span>
+                <span className="text-accent">{current.fx}</span>
+              </div>
+            </div>
+          </div>
+
+          <div
+            className={`flex items-center justify-between rounded-md px-2.5 py-1.5 text-[10px] ${
+              current.flagged
+                ? 'bg-amber-400/15 text-amber-300'
+                : 'bg-emerald-500/15 text-emerald-300'
+            }`}
+          >
+            <span>⚡ {current.anomaly}</span>
+            <span className="text-slate-400">&lt;25MB RAM</span>
+          </div>
+        </>
+      ) : (
+        <>
+          <div className="my-3 space-y-1.5">
+            {WEBHOOK_FEED.map((w) => (
+              <div
+                key={w.merchant}
+                className="flex items-center justify-between gap-2 rounded-lg border border-white/10 bg-white/[0.03] px-2.5 py-1.5 text-[11px]"
+              >
+                <div className="min-w-0 truncate">
+                  <span className="rounded bg-cyan-400/15 px-1.5 py-0.5 text-[9px] font-bold text-cyan-300">
+                    {w.provider}
+                  </span>{' '}
+                  <span className="text-white">{w.merchant}</span>
+                </div>
+                <span className="shrink-0 text-[10px] text-emerald-400">
+                  {w.amt} · {w.status}
+                </span>
+              </div>
+            ))}
+          </div>
+
+          <div className="flex items-center justify-between rounded-md bg-black/40 px-2.5 py-1.5 text-[10px] text-emerald-400">
+            <span>● Live: pulsematrix-ai.onrender.com</span>
+            <span className="text-slate-400">SQLite CGO-Free</span>
+          </div>
+        </>
+      )}
     </div>
   );
 };

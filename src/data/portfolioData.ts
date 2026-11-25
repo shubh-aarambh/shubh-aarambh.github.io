@@ -41,7 +41,7 @@ export const PROFILE = {
     'Full-Stack Developer',
   ],
   motto: ['Eager to learn.', 'Love to win.', 'Nothing to lose.'],
-  bio: 'Computer Science undergrad at Scaler School of Technology in Bengaluru. I engineer end-to-end systems — from autonomous browser & RAG AI agents to distributed HLD engines, raw C++11 HTTP servers, and production AWS EKS Kubernetes infrastructure.',
+  bio: 'Computer Science undergrad at Scaler School of Technology in Bengaluru. I engineer end-to-end production systems — from Go 1.22 financial intelligence engines and autonomous browser/RAG AI agents to distributed HLD engines, raw C++11 HTTP servers, and live AWS EKS Kubernetes infrastructure.',
   location: 'Bengaluru, India',
   timezone: 'Asia/Kolkata',
   education: 'Scaler School of Technology · B.Sc. CS (2024–2028)',
@@ -53,23 +53,23 @@ export const PROFILE = {
   avatarUrl: 'https://avatars.githubusercontent.com/u/177705668?v=4',
   githubJoined: 'Aug 2024',
   stats: {
-    publicRepos: 18,
-    yearlyContributions: 82,
-    commits: 64,
+    publicRepos: 20,
+    yearlyContributions: 90,
+    commits: 72,
     pullRequests: 7,
-    liveDeployments: 4,
-    languagesCount: 10,
+    liveDeployments: 5,
+    languagesCount: 11,
   },
 };
 
 // Real aggregated language distribution computed directly from shubh-aarambh repositories
 export const LANGUAGE_BREAKDOWN = [
-  { name: 'TypeScript', percent: 45.2, bytes: '466 KB', color: '#3178c6' },
-  { name: 'JavaScript', percent: 24.4, bytes: '251 KB', color: '#f7df1e' },
-  { name: 'Java', percent: 9.6, bytes: '99 KB', color: '#f89820' },
-  { name: 'Python', percent: 7.0, bytes: '72 KB', color: '#3776ab' },
-  { name: 'CSS / HTML', percent: 9.4, bytes: '97 KB', color: '#38bdf8' },
-  { name: 'C++ & IaC', percent: 4.4, bytes: '45 KB', color: '#10b981' },
+  { name: 'TypeScript', percent: 40.5, bytes: '466 KB', color: '#3178c6' },
+  { name: 'JavaScript', percent: 22.8, bytes: '267 KB', color: '#f7df1e' },
+  { name: 'Java', percent: 8.6, bytes: '99 KB', color: '#f89820' },
+  { name: 'Go', percent: 7.5, bytes: '86 KB', color: '#00ADD8' },
+  { name: 'Python', percent: 6.3, bytes: '72 KB', color: '#3776ab' },
+  { name: 'CSS / HTML & C++', percent: 14.3, bytes: '165 KB', color: '#10b981' },
 ];
 
 // Real last 26 weeks of GitHub contribution activity scanned via GitHub GraphQL API
@@ -103,6 +103,47 @@ export const GITHUB_HEATMAP_WEEKS: number[][] = [
 ];
 
 export const PROJECTS: ProjectItem[] = [
+  {
+    id: 'pulsematrix-ai',
+    repoName: 'pulsematrix-ai',
+    title: 'PulseMatrix AI — Go Financial Intelligence Engine',
+    tagline: 'Production Go 1.22 + SQLite + Gemini AI expense, anomaly & webhook platform',
+    description:
+      'Flagship autonomous financial intelligence and expense engine written in Go 1.22 with zero-dependency CGO-free SQLite (<25MB runtime footprint). Features separate RBAC User & Admin Portals, live multi-currency FX conversion, Google Pay/PhonePe/Paytm/Stripe payment webhooks, Gemini 1.5 Flash SMS & receipt parsing with regex fallback, and statistical anomaly & subscription detection.',
+    category: 'Systems & HLD',
+    featured: true,
+    previewType: 'golang',
+    year: '2026',
+    pushedAt: 'Nov 2026',
+    primaryLanguage: 'Go',
+    languages: ['Go', 'HTML', 'CSS', 'JavaScript', 'Dockerfile'],
+    techStack: [
+      'Go 1.22',
+      'Gorilla Mux',
+      'SQLite (CGO-Free)',
+      'Gemini 1.5 AI',
+      'JWT + Bcrypt',
+      'Payment Webhooks',
+      'Docker',
+      'Render Cloud',
+      'Chart.js',
+    ],
+    githubUrl: 'https://github.com/shubh-aarambh/pulsematrix-ai',
+    liveUrl: 'https://pulsematrix-ai.onrender.com',
+    highlights: [
+      'Engineered high-throughput Go 1.22 + CGO-free modernc.org/sqlite backend achieving <25MB Docker runtime footprint deployed live on Render.',
+      'Built separate Role-Based User (/login) & Platform Admin Console (/admin/login) portals secured with JWT, Bcrypt, and HTTP-Only cookies.',
+      'Integrated direct payment webhooks (GPay, PhonePe, Paytm, Apple Pay, Stripe, Razorpay) and automated Gemini 1.5 AI SMS/receipt parsing with heuristic fallback.',
+      'Implemented statistical anomaly & subscription detection flagging duplicate charges, +50% spend spikes, and live multi-currency FX conversion.',
+    ],
+    architectureNote:
+      'Payment Webhooks / SMS AI Ingest → Go 1.22 Gorilla Mux + RBAC JWT Middleware → Gemini 1.5 Flash + Anomaly Engine → Pure-Go SQLite + Render Docker.',
+    metrics: [
+      { label: 'Runtime', value: 'Go 1.22 · <25MB' },
+      { label: 'AI & FX', value: 'Gemini + Webhooks' },
+      { label: 'Status', value: 'Live on Render' },
+    ],
+  },
   {
     id: 'study-track',
     repoName: 'Study-Track',
@@ -459,35 +500,6 @@ export const PROJECTS: ProjectItem[] = [
     ],
   },
   {
-    id: 'go-upcoming',
-    repoName: 'go-project (watching GitHub...)',
-    title: 'Go Systems Project — Active Build',
-    tagline: 'Currently in active development · Auto-highlights live once pushed to GitHub',
-    description:
-      'Upcoming high-concurrency backend & systems project being engineered in Go (Golang). This highlighted spotlight automatically monitors github.com/shubh-aarambh via the GitHub API and promotes the repository live with its real name, description, and source link the moment code is pushed.',
-    category: 'Systems & HLD',
-    featured: true,
-    inProgress: true,
-    previewType: 'golang',
-    year: '2026',
-    pushedAt: 'In Progress',
-    primaryLanguage: 'Go',
-    languages: ['Go'],
-    techStack: ['Go (Golang)', 'Goroutines & Channels', 'Concurrency', 'REST / Systems', 'GitHub Auto-Sync'],
-    githubUrl: 'https://github.com/shubh-aarambh?tab=repositories',
-    highlights: [
-      'Actively under construction in Go (Golang) — engineered for speed and concurrency.',
-      'Portfolio auto-sync watches github.com/shubh-aarambh for any newly pushed Go repository.',
-      'Automatically hydrates repo name, description, live URL, and push timestamp upon push.',
-    ],
-    architectureNote: 'Local Go Workspace → git push origin main → GitHub API Auto-Discovery → Live Portfolio Flagship.',
-    metrics: [
-      { label: 'Language', value: 'Go (Golang)' },
-      { label: 'Sync', value: 'GitHub Live API' },
-      { label: 'Status', value: 'Building Now' },
-    ],
-  },
-  {
     id: 'emergency-flight',
     repoName: 'project2',
     title: 'Emergency Flight & Crisis Finder',
@@ -601,16 +613,16 @@ export const SKILL_DOMAINS = [
   {
     id: 'systems',
     title: 'Systems & Backend',
-    subtitle: 'Low-level networking, HLD & JVM APIs',
+    subtitle: 'Go 1.22, C++ networking, HLD & JVM APIs',
     items: [
+      'Go 1.22 & Gorilla Mux',
       'C++11 / POSIX Sockets',
       'Consistent Hashing',
       'Java 17 & Spring Boot 3',
       'FastAPI (Python)',
       'Node.js & Express 5',
-      'WebSockets',
-      'PostgreSQL & MongoDB',
-      'Prisma & JPA / JPQL',
+      'WebSockets & Webhooks',
+      'PostgreSQL · SQLite · Mongo',
     ],
   },
   {
@@ -631,6 +643,14 @@ export const SKILL_DOMAINS = [
 ];
 
 export const TIMELINE_MILESTONES = [
+  {
+    period: 'Nov 2026',
+    era: 'Go Systems & Autonomous FinTech AI',
+    title: 'PulseMatrix AI (Go 1.22 + SQLite + Gemini) Live on Render',
+    description:
+      'Engineered and deployed PulseMatrix AI — a <25MB Dockerized Go 1.22 financial intelligence engine with CGO-free SQLite, RBAC User/Admin portals, live FX conversion, GPay/PhonePe/Stripe webhooks, and Gemini AI SMS parsing.',
+    tags: ['Go 1.22', 'SQLite', 'Gemini AI', 'Docker', 'Render'],
+  },
   {
     period: 'Oct – Nov 2026',
     era: 'Cloud-Native & Production DevOps',
@@ -666,6 +686,7 @@ export const TIMELINE_MILESTONES = [
 ];
 
 export const MARQUEE_TECH = [
+  'Go 1.22',
   'TypeScript',
   'React 19',
   'Next.js 16',
@@ -679,6 +700,7 @@ export const MARQUEE_TECH = [
   'FastAPI',
   'Spring Boot',
   'C++11',
+  'SQLite',
   'PostgreSQL',
   'MongoDB',
   'Prometheus',

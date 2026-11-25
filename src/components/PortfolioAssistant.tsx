@@ -116,15 +116,18 @@ export const PortfolioAssistant: React.FC<PortfolioAssistantProps> = ({
       };
     }
 
-    if (q.includes('go') || q.includes('golang')) {
-      const goProj = findProject('go-upcoming');
+    if (q.includes('go') || q.includes('golang') || q.includes('pulse') || q.includes('render') || q.includes('matrix')) {
+      const goProj = findProject('pulsematrix-ai');
       return {
-        text: goProj && !goProj.inProgress
-          ? `Shubh's Go project (${goProj.repoName}) is live and synced straight from GitHub! Open its dossier to inspect the repo.`
-          : `Shubh is actively building a Go (Golang) systems project right now! The portfolio auto-syncs with github.com/${PROFILE.handle} and will automatically highlight it live the moment he pushes the code.`,
-        actions: goProj
-          ? [{ label: 'Inspect Go Spotlight', onClick: () => onSelectProject(goProj) }]
-          : [],
+        text: `PulseMatrix AI is Shubh's flagship Go 1.22 financial intelligence & expense engine deployed live on Render (pulsematrix-ai.onrender.com)! It features pure CGO-free SQLite (<25MB RAM), RBAC User & Admin portals, GPay/PhonePe/Stripe webhooks, live multi-currency FX, and Gemini 1.5 AI SMS parsing with anomaly detection.`,
+        actions: [
+          ...(goProj ? [{ label: 'Inspect PulseMatrix AI', onClick: () => onSelectProject(goProj) }] : []),
+          {
+            label: 'Launch Live Render App',
+            onClick: () =>
+              window.open('https://pulsematrix-ai.onrender.com', '_blank', 'noreferrer'),
+          },
+        ],
       };
     }
 

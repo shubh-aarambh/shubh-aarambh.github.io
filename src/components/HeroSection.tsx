@@ -34,15 +34,38 @@ const INITIAL_LINES: TermLine[] = [
   { type: 'accent', text: '✓ Connected to github.com/shubh-aarambh (Bengaluru, IN)' },
   {
     type: 'out',
-    text: '  18 public repos · 82 yearly contributions · 4 live deploys',
+    text: '  20 public repos · 5 live deploys · Go 1.22 + TS + AWS EKS',
   },
   {
     type: 'out',
-    text: '  Focus: AI Agents · AWS EKS / K8s · Distributed HLD · Full-Stack',
+    text: '  Latest: PulseMatrix AI → pulsematrix-ai.onrender.com',
   },
   {
     type: 'out',
-    text: '  Type "help", "projects", "stack", or "neofetch" below ↓',
+    text: '  Type "help", "projects", "stack", or "resume" below ↓',
+  },
+];
+
+const LIVE_DEPLOY_BAR = [
+  {
+    name: 'PulseMatrix AI',
+    platform: 'Go · Render',
+    url: 'https://pulsematrix-ai.onrender.com',
+  },
+  {
+    name: 'StudyTrack',
+    platform: 'AWS EKS',
+    url: 'http://a554166002e3d4c6bbb0bde1c641c9c1-147430934.ap-south-1.elb.amazonaws.com/',
+  },
+  {
+    name: 'Reserve-Space',
+    platform: 'MERN · Vercel',
+    url: 'https://reserve-space.vercel.app/',
+  },
+  {
+    name: 'ScreenTop AI',
+    platform: 'Gemini · Vercel',
+    url: 'https://screen-top.vercel.app',
   },
 ];
 
@@ -158,7 +181,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
   return (
     <section
       id="top"
-      className="relative overflow-hidden pb-16 pt-28 sm:pt-32 lg:pt-36"
+      className="hero-spotlight-dome relative overflow-hidden pb-16 pt-28 sm:pt-32 lg:pt-36"
     >
       {/* Interactive particle constellation background */}
       <NeuralCanvas />
@@ -316,6 +339,34 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
                 <Github className="h-4 w-4" />@{PROFILE.handle}
               </a>
             </motion.div>
+
+            {/* Live Deployed Apps Quick-Launch Strip */}
+            <motion.div
+              initial={{ opacity: 0, y: 14 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.55, delay: 0.4 }}
+              className="mt-6 flex flex-wrap items-center gap-2"
+            >
+              <span className="font-mono text-[10px] font-bold uppercase tracking-widest text-[var(--text-muted)]">
+                LIVE NOW:
+              </span>
+              {LIVE_DEPLOY_BAR.map((app) => (
+                <a
+                  key={app.name}
+                  href={app.url}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="group inline-flex items-center gap-1.5 rounded-full border border-emerald-500/25 bg-emerald-500/[0.07] px-3 py-1 font-mono text-[11px] text-[var(--text-primary)] transition-all hover:border-emerald-400 hover:bg-emerald-500/15"
+                >
+                  <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-emerald-400" />
+                  <span className="font-semibold">{app.name}</span>
+                  <span className="text-[10px] text-[var(--text-muted)]">
+                    · {app.platform}
+                  </span>
+                  <ArrowUpRight className="h-3 w-3 text-emerald-400 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
+                </a>
+              ))}
+            </motion.div>
           </div>
 
           {/* Right Hero Column: Profile Card + Interactive Terminal */}
@@ -450,13 +501,13 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
               icon: Layers,
               value: `${PROFILE.stats.languagesCount}+`,
               label: 'Languages & IaC',
-              sub: 'TS · Py · Java · C++ · HCL',
+              sub: 'Go · TS · Py · Java · C++',
             },
             {
               icon: Globe,
               value: `${PROFILE.stats.liveDeployments}`,
               label: 'Live Deployments',
-              sub: 'AWS EKS & Vercel',
+              sub: 'Render · AWS EKS · Vercel',
             },
           ].map((stat) => (
             <SpotlightCard key={stat.label} className="p-4">

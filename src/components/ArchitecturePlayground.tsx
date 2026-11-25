@@ -39,6 +39,53 @@ interface ArchBlueprint {
 
 const BLUEPRINTS: ArchBlueprint[] = [
   {
+    id: 'pulsematrix',
+    name: 'PulseMatrix AI (Go 1.22)',
+    repo: 'pulsematrix-ai',
+    badge: 'GO 1.22 · SQLITE · GEMINI · RENDER',
+    summary:
+      'Trace how a GPay/PhonePe webhook or bank SMS flows through Go 1.22 Gorilla Mux, Gemini 1.5 AI parsing, statistical anomaly detection, and pure-Go SQLite (<25MB RAM).',
+    totalLatency: '14ms Go / Live Render',
+    nodes: [
+      {
+        id: 'ingest',
+        label: 'Webhooks & SMS',
+        sub: 'GPay · PhonePe · Stripe',
+        latency: '+2ms',
+        icon: Globe,
+        detail: 'Receives live payment webhooks or pasted bank SMS notifications through authenticated endpoints.',
+        tradeoff: 'Unified ingestion normalizes 7+ payment providers into a single canonical expense event.',
+      },
+      {
+        id: 'go-mux',
+        label: 'Go 1.22 + RBAC JWT',
+        sub: 'Gorilla Mux + Bcrypt',
+        latency: '+3ms',
+        icon: Server,
+        detail: 'Isolates User (/login) and Admin (/admin/login) portals with HTTP-Only JWT cookies and rate protection.',
+        tradeoff: 'Compiled Go binary delivers high concurrency with <25MB Docker memory footprint.',
+      },
+      {
+        id: 'gemini-fx',
+        label: 'Gemini AI + Anomaly',
+        sub: 'NLP + Heuristic + Live FX',
+        latency: '+6ms',
+        icon: Bot,
+        detail: 'Extracts merchant & category via Gemini 1.5 Flash (regex fallback if offline), converts multi-currency FX, and flags +50% spend spikes.',
+        tradeoff: 'Deterministic heuristic fallback guarantees 100% uptime even without external LLM keys.',
+      },
+      {
+        id: 'sqlite',
+        label: 'Pure-Go SQLite',
+        sub: 'modernc.org/sqlite (CGO-Free)',
+        latency: '+3ms',
+        icon: Database,
+        detail: 'Stores transactions, recurring subscriptions, and audit telemetry in an embedded zero-CGO SQLite database.',
+        tradeoff: 'CGO-free SQLite produces static, ultra-portable Docker images deployable on Render in seconds.',
+      },
+    ],
+  },
+  {
     id: 'eks',
     name: 'StudyTrack Cloud-Native EKS',
     repo: 'Study-Track',
