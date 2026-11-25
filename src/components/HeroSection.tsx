@@ -186,7 +186,11 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
       {/* Interactive particle constellation background */}
       <NeuralCanvas />
 
-      {/* Ambient radial lighting blobs */}
+      {/* Top atmospheric spotlight dome */}
+      <div
+        aria-hidden="true"
+        className="hero-dome pointer-events-none absolute inset-x-0 -top-24 mx-auto h-[420px] max-w-4xl rounded-full blur-[120px]"
+      />
       <div
         aria-hidden="true"
         className="pointer-events-none absolute -left-32 top-16 h-96 w-96 rounded-full blur-[130px]"

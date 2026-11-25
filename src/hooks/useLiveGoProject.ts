@@ -8,6 +8,8 @@ interface GitHubRepoApi {
   homepage: string | null;
   language: string | null;
   pushed_at: string;
+  topics?: string[];
+  stargazers_count: number;
   fork: boolean;
 }
 
@@ -49,7 +51,10 @@ export function useLiveGoProject(): GoSyncState {
       const repos: GitHubRepoApi[] = await res.json();
 
       const goRepo = repos.find(
-        (r) => !r.fork && r.language?.toLowerCase() === 'go'
+        (r) =>
+          !r.fork &&
+          (r.name.toLowerCase() === 'pulsematrix-ai' ||
+            r.language?.toLowerCase() === 'go')
       );
 
       setLastChecked(
@@ -71,13 +76,14 @@ export function useLiveGoProject(): GoSyncState {
               repoName: goRepo.name,
               pushedAt: pushedLabel,
               githubUrl: goRepo.html_url,
-              liveUrl: goRepo.homepage?.trim() || item.liveUrl,
+              liveUrl:
+                goRepo.homepage?.trim() || 'https://pulsematrix-ai.onrender.com',
             };
           })
         );
         return true;
       }
-      return true;
+      return false;
     } catch {
       return true;
     } finally {
