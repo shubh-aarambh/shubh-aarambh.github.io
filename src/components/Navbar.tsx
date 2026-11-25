@@ -9,9 +9,12 @@ import {
   Moon,
   Sun,
   Terminal,
+  Volume2,
+  VolumeX,
   X,
 } from 'lucide-react';
 import { PROFILE } from '../data/portfolioData';
+import { ScrambleText } from './ScrambleText';
 
 export type AccentTheme = 'cyan' | 'amber' | 'emerald' | 'violet';
 
@@ -22,12 +25,15 @@ interface NavbarProps {
   onChangeAccent: (accent: AccentTheme) => void;
   onOpenCommand: () => void;
   onOpenResume: () => void;
+  soundEnabled: boolean;
+  onToggleSound: () => void;
 }
 
 const NAV_LINKS = [
   { label: 'DNA', href: '#about' },
   { label: 'Flagship', href: '#flagship' },
   { label: 'Vault', href: '#vault' },
+  { label: 'Sandbox', href: '#architecture' },
   { label: 'Journey', href: '#journey' },
   { label: 'Contact', href: '#contact' },
 ];
@@ -46,6 +52,8 @@ export const Navbar: React.FC<NavbarProps> = ({
   onChangeAccent,
   onOpenCommand,
   onOpenResume,
+  soundEnabled,
+  onToggleSound,
 }) => {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -114,7 +122,7 @@ export const Navbar: React.FC<NavbarProps> = ({
               <span className="absolute -right-0.5 -top-0.5 h-2 w-2 rounded-full bg-emerald-400 ring-2 ring-[var(--bg-primary)]" />
             </span>
             <span className="hidden sm:inline-block">
-              <span className="text-[var(--text-primary)]">SHUBH</span>
+              <ScrambleText text="SHUBH" className="text-[var(--text-primary)]" />
               <span className="text-accent">.DEV</span>
             </span>
           </a>
@@ -189,6 +197,25 @@ export const Navbar: React.FC<NavbarProps> = ({
             >
               <FileText className="h-3.5 w-3.5 text-accent" />
               <span className="hidden xl:inline">Resume</span>
+            </button>
+
+            {/* Sound FX Toggle */}
+            <button
+              type="button"
+              onClick={onToggleSound}
+              aria-label="Toggle UI sound effects"
+              title={soundEnabled ? 'Mute subtle UI sounds' : 'Enable subtle UI sounds'}
+              className={`hidden h-8 w-8 cursor-pointer items-center justify-center rounded-xl border transition-colors sm:flex ${
+                soundEnabled
+                  ? 'border-accent/60 bg-accent/15 text-accent'
+                  : 'border-[var(--border-subtle)] text-[var(--text-secondary)] hover:border-accent hover:text-[var(--text-primary)]'
+              }`}
+            >
+              {soundEnabled ? (
+                <Volume2 className="h-3.5 w-3.5" />
+              ) : (
+                <VolumeX className="h-3.5 w-3.5" />
+              )}
             </button>
 
             {/* Dark/Light Mode */}

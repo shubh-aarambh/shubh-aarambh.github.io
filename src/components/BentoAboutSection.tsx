@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import {
+  Activity,
+  ArrowUpRight,
   Clock,
   Code2,
   Cpu,
@@ -17,6 +19,7 @@ import {
   PROFILE,
   SKILL_DOMAINS,
 } from '../data/portfolioData';
+import { useLiveGitHubActivity } from '../hooks/useLiveGitHubActivity';
 import { SpotlightCard } from './SpotlightCard';
 
 const DOMAIN_ICONS = [Sparkles, Server, Cpu, Layers];
@@ -28,6 +31,7 @@ interface BentoAboutSectionProps {
 export const BentoAboutSection: React.FC<BentoAboutSectionProps> = ({
   onFilterBySkill,
 }) => {
+  const { events: recentActivity, liveLoaded } = useLiveGitHubActivity();
   const [istTime, setIstTime] = useState('');
 
   useEffect(() => {
@@ -113,6 +117,45 @@ export const BentoAboutSection: React.FC<BentoAboutSectionProps> = ({
                   via Terraform and Helm — I love digging down to first principles and shipping
                   production-ready software.
                 </p>
+              </div>
+
+              <div className="mt-4 rounded-xl border border-[var(--border-subtle)] bg-black/20 p-3.5">
+                <div className="mb-2.5 flex items-center justify-between">
+                  <span className="inline-flex items-center gap-1.5 font-mono text-[11px] font-semibold text-accent">
+                    <Activity className="h-3.5 w-3.5" />
+                    RECENT GITHUB PUSH STREAM
+                  </span>
+                  <span className="font-mono text-[10px] text-emerald-400">
+                    {liveLoaded ? '● LIVE API' : '● VERIFIED SNAPSHOT'}
+                  </span>
+                </div>
+                <div className="space-y-1.5">
+                  {recentActivity.slice(0, 3).map((ev) => (
+                    <a
+                      key={ev.id}
+                      href={ev.repoUrl}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="group flex items-center justify-between gap-2 rounded-lg border border-transparent px-2 py-1 font-mono text-[11px] transition-colors hover:border-[var(--border-subtle)] hover:bg-white/[0.03]"
+                    >
+                      <div className="flex min-w-0 items-center gap-2">
+                        <span className="rounded bg-accent/15 px-1.5 py-0.5 text-[9px] font-bold text-accent">
+                          {ev.action}
+                        </span>
+                        <span className="shrink-0 font-semibold text-[var(--text-primary)] group-hover:text-accent">
+                          {ev.repo}
+                        </span>
+                        <span className="truncate text-[var(--text-muted)]">
+                          — {ev.message}
+                        </span>
+                      </div>
+                      <span className="inline-flex shrink-0 items-center gap-0.5 text-[10px] text-[var(--text-muted)]">
+                        {ev.timeAgo}
+                        <ArrowUpRight className="h-3 w-3 opacity-0 transition-opacity group-hover:opacity-100" />
+                      </span>
+                    </a>
+                  ))}
+                </div>
               </div>
 
               <div className="flex flex-wrap items-center gap-3 border-t border-[var(--border-subtle)] pt-4 font-mono text-xs text-[var(--text-secondary)]">

@@ -16,7 +16,7 @@ export const JourneySection: React.FC = () => {
           className="mb-12"
         >
           <span className="font-mono text-xs font-semibold uppercase tracking-widest text-accent">
-            04 // COMMIT CHRONICLE
+            05 // COMMIT CHRONICLE
           </span>
           <h2 className="mt-2 font-[family-name:var(--font-display)] text-3xl font-extrabold tracking-tight text-[var(--text-primary)] sm:text-4xl">
             Engineering Evolution (2025 → 2026)

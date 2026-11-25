@@ -5,6 +5,8 @@ import {
   ExternalLink,
   FolderGit2,
   Github,
+  LayoutGrid,
+  List,
   PlayCircle,
   Search,
 } from 'lucide-react';
@@ -47,10 +49,12 @@ export const ProjectVault: React.FC<ProjectVaultProps> = ({
   onQueryChange,
 }) => {
   const [category, setCategory] = useState<ProjectCategory>('All');
+  const [viewMode, setViewMode] = useState<'grid' | 'table'>('grid');
+  const [sortBy, setSortBy] = useState<'default' | 'live' | 'alpha'>('default');
 
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();
-    return projects.filter((p) => {
+    const list = projects.filter((p) => {
       const catOk = category === 'All' || p.category === category;
       const searchOk =
         !q ||
@@ -61,7 +65,17 @@ export const ProjectVault: React.FC<ProjectVaultProps> = ({
         p.primaryLanguage.toLowerCase().includes(q);
       return catOk && searchOk;
     });
-  }, [category, projects, query]);
+
+    if (sortBy === 'live') {
+      return [...list].sort(
+        (a, b) => Number(Boolean(b.liveUrl)) - Number(Boolean(a.liveUrl))
+      );
+    }
+    if (sortBy === 'alpha') {
+      return [...list].sort((a, b) => a.title.localeCompare(b.title));
+    }
+    return list;
+  }, [category, projects, query, sortBy]);
 
   return (
     <section id="vault" className="relative py-20 sm:py-24">
@@ -97,66 +111,110 @@ export const ProjectVault: React.FC<ProjectVaultProps> = ({
           </div>
         </motion.div>
 
-        {/* Animated Category Pills */}
-        <div className="mb-8 flex flex-wrap gap-2">
-          {CATEGORIES.map((cat) => {
-            const active = category === cat;
-            const count =
-              cat === 'All'
-                ? projects.length
-                : projects.filter((p) => p.category === cat).length;
+        {/* Animated Category Pills + View & Sort Controls */}
+        <div className="mb-8 flex flex-wrap items-center justify-between gap-3">
+          <div className="flex flex-wrap gap-2">
+            {CATEGORIES.map((cat) => {
+              const active = category === cat;
+              const count =
+                cat === 'All'
+                  ? projects.length
+                  : projects.filter((p) => p.category === cat).length;
 
-            return (
+              return (
+                <button
+                  key={cat}
+                  type="button"
+                  onClick={() => setCategory(cat)}
+                  className={`relative cursor-pointer rounded-xl px-4 py-2 font-mono text-xs font-semibold transition-colors ${
+                    active
+                      ? 'text-slate-950'
+                      : 'border border-[var(--border-subtle)] bg-[var(--bg-card)] text-[var(--text-secondary)] hover:border-[var(--border-strong)] hover:text-[var(--text-primary)]'
+                  }`}
+                >
+                  {active && (
+                    <motion.span
+                      layoutId="vault-category-pill"
+                      transition={{ type: 'spring', stiffness: 380, damping: 32 }}
+                      className="absolute inset-0 rounded-xl bg-accent"
+                    />
+                  )}
+                  <span className="relative z-10 flex items-center gap-1.5">
+                    {cat}
+                    <span
+                      className={`rounded-md px-1.5 py-0.5 text-[10px] ${
+                        active
+                          ? 'bg-black/15 text-slate-950'
+                          : 'bg-white/5 text-[var(--text-muted)]'
+                      }`}
+                    >
+                      {count}
+                    </span>
+                  </span>
+                </button>
+              );
+            })}
+          </div>
+
+          <div className="flex items-center gap-2">
+            <select
+              value={sortBy}
+              onChange={(e) => setSortBy(e.target.value as 'default' | 'live' | 'alpha')}
+              aria-label="Sort repositories"
+              className="cursor-pointer rounded-xl border border-[var(--border-subtle)] bg-[var(--bg-card)] px-3 py-2 font-mono text-xs text-[var(--text-secondary)] outline-none focus:border-accent"
+            >
+              <option value="default">Sort: Featured</option>
+              <option value="live">Sort: Live Deploys First</option>
+              <option value="alpha">Sort: A → Z</option>
+            </select>
+
+            <div className="flex rounded-xl border border-[var(--border-subtle)] bg-[var(--bg-card)] p-1">
               <button
-                key={cat}
                 type="button"
-                onClick={() => setCategory(cat)}
-                className={`relative cursor-pointer rounded-xl px-4 py-2 font-mono text-xs font-semibold transition-colors ${
-                  active
-                    ? 'text-slate-950'
-                    : 'border border-[var(--border-subtle)] bg-[var(--bg-card)] text-[var(--text-secondary)] hover:border-[var(--border-strong)] hover:text-[var(--text-primary)]'
+                onClick={() => setViewMode('grid')}
+                title="Grid view"
+                className={`cursor-pointer rounded-lg p-1.5 transition-colors ${
+                  viewMode === 'grid'
+                    ? 'bg-accent text-slate-950'
+                    : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)]'
                 }`}
               >
-                {active && (
-                  <motion.span
-                    layoutId="vault-category-pill"
-                    transition={{ type: 'spring', stiffness: 380, damping: 32 }}
-                    className="absolute inset-0 rounded-xl bg-accent"
-                  />
-                )}
-                <span className="relative z-10 flex items-center gap-1.5">
-                  {cat}
-                  <span
-                    className={`rounded-md px-1.5 py-0.5 text-[10px] ${
-                      active
-                        ? 'bg-black/15 text-slate-950'
-                        : 'bg-white/5 text-[var(--text-muted)]'
-                    }`}
-                  >
-                    {count}
-                  </span>
-                </span>
+                <LayoutGrid className="h-3.5 w-3.5" />
               </button>
-            );
-          })}
+              <button
+                type="button"
+                onClick={() => setViewMode('table')}
+                title="Engineering table view"
+                className={`cursor-pointer rounded-lg p-1.5 transition-colors ${
+                  viewMode === 'table'
+                    ? 'bg-accent text-slate-950'
+                    : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)]'
+                }`}
+              >
+                <List className="h-3.5 w-3.5" />
+              </button>
+            </div>
+          </div>
         </div>
 
-        {/* Project Cards Grid */}
-        <motion.div layout className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-          <AnimatePresence mode="popLayout">
-            {filtered.map((project) => (
-              <motion.div
-                key={project.id}
-                layout
-                initial={{ opacity: 0, scale: 0.96 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.96 }}
-                transition={{ duration: 0.25 }}
-              >
-                <SpotlightCard
-                  onClick={() => onSelectProject(project)}
-                  className="group flex h-full cursor-pointer flex-col justify-between p-5"
+        {/* Project Cards Grid OR Compact Engineering Table */}
+        {viewMode === 'grid' ? (
+          <motion.div layout className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+            <AnimatePresence mode="popLayout">
+              {filtered.map((project) => (
+                <motion.div
+                  key={project.id}
+                  layout
+                  initial={{ opacity: 0, scale: 0.96 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.96 }}
+                  transition={{ duration: 0.25 }}
                 >
+                  <SpotlightCard
+                    tilt
+                    onClick={() => onSelectProject(project)}
+                    className="group flex h-full cursor-pointer flex-col justify-between p-5"
+                  >
                   <div>
                     {/* Top Row */}
                     <div className="flex items-start justify-between gap-2">
@@ -256,6 +314,82 @@ export const ProjectVault: React.FC<ProjectVaultProps> = ({
             ))}
           </AnimatePresence>
         </motion.div>
+        ) : (
+          <SpotlightCard className="overflow-x-auto">
+            <table className="w-full min-w-[680px] text-left font-mono text-xs">
+              <thead>
+                <tr className="border-b border-[var(--border-subtle)] bg-black/20 text-[10px] uppercase tracking-wider text-[var(--text-muted)]">
+                  <th className="px-5 py-3">Project / Repo</th>
+                  <th className="px-4 py-3">Domain</th>
+                  <th className="px-4 py-3">Language</th>
+                  <th className="px-4 py-3">Top Stack</th>
+                  <th className="px-5 py-3 text-right">Links</th>
+                </tr>
+              </thead>
+              <tbody>
+                {filtered.map((project) => (
+                  <tr
+                    key={project.id}
+                    onClick={() => onSelectProject(project)}
+                    className="cursor-pointer border-b border-[var(--border-subtle)]/60 transition-colors hover:bg-accent/[0.06]"
+                  >
+                    <td className="px-5 py-3.5">
+                      <div className="font-[family-name:var(--font-heading)] text-sm font-bold text-[var(--text-primary)]">
+                        {project.title}
+                      </div>
+                      <div className="text-[11px] text-accent">
+                        {project.repoName} · {project.pushedAt}
+                      </div>
+                    </td>
+                    <td className="px-4 py-3.5 text-[var(--text-secondary)]">
+                      {project.category}
+                    </td>
+                    <td className="px-4 py-3.5">
+                      <span className="inline-flex items-center gap-1.5 text-[var(--text-primary)]">
+                        <span
+                          className="h-2 w-2 rounded-full"
+                          style={{
+                            backgroundColor:
+                              LANG_COLORS[project.primaryLanguage] || '#94a3b8',
+                          }}
+                        />
+                        {project.primaryLanguage}
+                      </span>
+                    </td>
+                    <td className="px-4 py-3.5 text-[var(--text-secondary)]">
+                      {project.techStack.slice(0, 3).join(' · ')}
+                    </td>
+                    <td
+                      className="px-5 py-3.5 text-right"
+                      onClick={(e) => e.stopPropagation()}
+                    >
+                      <div className="inline-flex items-center gap-2">
+                        {project.liveUrl && (
+                          <a
+                            href={project.liveUrl}
+                            target="_blank"
+                            rel="noreferrer"
+                            className="rounded-md border border-emerald-500/30 bg-emerald-500/10 px-2 py-1 text-[10px] font-semibold text-emerald-400"
+                          >
+                            Live
+                          </a>
+                        )}
+                        <a
+                          href={project.githubUrl}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="rounded-md border border-[var(--border-subtle)] px-2 py-1 text-[10px] text-[var(--text-secondary)] hover:border-accent hover:text-accent"
+                        >
+                          GitHub
+                        </a>
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </SpotlightCard>
+        )}
 
         {filtered.length === 0 && (
           <div className="rounded-2xl border border-[var(--border-subtle)] bg-[var(--bg-card)] py-12 text-center">

@@ -82,6 +82,14 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({
         action: () => (window.location.hash = '#vault'),
       },
       {
+        id: 'nav-arch',
+        group: 'Navigation',
+        label: 'Jump to Live Architecture Sandbox',
+        hint: '#architecture',
+        icon: Compass,
+        action: () => (window.location.hash = '#architecture'),
+      },
+      {
         id: 'nav-journey',
         group: 'Navigation',
         label: 'Jump to Engineering Timeline',

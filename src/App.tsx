@@ -8,6 +8,7 @@ import { HeroSection } from './components/HeroSection';
 import { BentoAboutSection } from './components/BentoAboutSection';
 import { FlagshipProjects } from './components/FlagshipProjects';
 import { ProjectVault } from './components/ProjectVault';
+import { ArchitecturePlayground } from './components/ArchitecturePlayground';
 import { JourneySection } from './components/JourneySection';
 import { ContactSection } from './components/ContactSection';
 import { ProjectModal } from './components/ProjectModal';
@@ -15,6 +16,9 @@ import { CommandPalette } from './components/CommandPalette';
 import { CursorAura } from './components/CursorAura';
 import { ResumeModal } from './components/ResumeModal';
 import { PortfolioAssistant } from './components/PortfolioAssistant';
+import { SectionRail } from './components/SectionRail';
+import { ShortcutsModal } from './components/ShortcutsModal';
+import { soundEngine } from './utils/soundEngine';
 
 const ACCENT_ORDER: AccentTheme[] = ['cyan', 'amber', 'emerald', 'violet'];
 
@@ -23,10 +27,12 @@ export default function App() {
     useLiveGoProject();
   const [isDark, setIsDark] = useState(true);
   const [accent, setAccent] = useState<AccentTheme>('cyan');
+  const [soundEnabled, setSoundEnabled] = useState(false);
   const [selectedProject, setSelectedProject] = useState<ProjectItem | null>(null);
   const [commandOpen, setCommandOpen] = useState(false);
   const [resumeOpen, setResumeOpen] = useState(false);
   const [assistantOpen, setAssistantOpen] = useState(false);
+  const [shortcutsOpen, setShortcutsOpen] = useState(false);
   const [vaultQuery, setVaultQuery] = useState('');
   const [toast, setToast] = useState<string | null>(null);
 
@@ -56,21 +62,20 @@ export default function App() {
     document.documentElement.setAttribute('data-accent', accent);
   }, [accent]);
 
-  // Global Ctrl+K / Cmd+K shortcut
-  useEffect(() => {
-    const onKeyDown = (e: KeyboardEvent) => {
-      if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') {
-        e.preventDefault();
-        setCommandOpen((o) => !o);
-      }
-    };
-    window.addEventListener('keydown', onKeyDown);
-    return () => window.removeEventListener('keydown', onKeyDown);
-  }, []);
+  const handleToggleSound = useCallback(() => {
+    setSoundEnabled((prev) => {
+      const next = !prev;
+      soundEngine.enabled = next;
+      if (next) soundEngine.playSuccess();
+      notify(next ? 'Subtle tactile UI sounds enabled' : 'UI sounds muted');
+      return next;
+    });
+  }, [notify]);
 
   const handleCycleAccent = useCallback(() => {
     setAccent((curr) => {
       const next = ACCENT_ORDER[(ACCENT_ORDER.indexOf(curr) + 1) % ACCENT_ORDER.length];
+      soundEngine.playClick();
       notify(`Switched accent to ${next.toUpperCase()}`);
       return next;
     });
@@ -79,22 +84,85 @@ export default function App() {
   const handleCopyEmail = useCallback(async () => {
     try {
       await navigator.clipboard.writeText(PROFILE.email);
+      soundEngine.playSuccess();
       notify(`Copied ${PROFILE.email} to clipboard`);
     } catch {
       notify(`Email: ${PROFILE.email}`);
     }
   }, [notify]);
 
+  const handleSyncGo = useCallback(async () => {
+    soundEngine.playClick();
+    const found = await syncNow();
+    if (found) {
+      soundEngine.playSuccess();
+      notify('Go project detected & promoted live from GitHub!');
+    } else {
+      notify('Checked GitHub — no Go repo pushed yet (auto-watches on load).');
+    }
+  }, [notify, syncNow]);
+
+  // Global keyboard shortcuts (Ctrl+K, T, A, R, C, G, ?)
+  useEffect(() => {
+    const onKeyDown = (e: KeyboardEvent) => {
+      if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') {
+        e.preventDefault();
+        soundEngine.playClick();
+        setCommandOpen((o) => !o);
+        return;
+      }
+
+      // Skip single-key shortcuts when typing inside inputs/textareas/selects
+      const tag = (e.target as HTMLElement | null)?.tagName;
+      if (
+        tag === 'INPUT' ||
+        tag === 'TEXTAREA' ||
+        tag === 'SELECT' ||
+        e.metaKey ||
+        e.ctrlKey ||
+        e.altKey
+      ) {
+        return;
+      }
+
+      const key = e.key.toLowerCase();
+      if (e.key === '?') {
+        e.preventDefault();
+        soundEngine.playClick();
+        setShortcutsOpen((o) => !o);
+      } else if (key === 't') {
+        soundEngine.playClick();
+        setIsDark((d) => !d);
+      } else if (key === 'a') {
+        handleCycleAccent();
+      } else if (key === 'r') {
+        soundEngine.playClick();
+        setResumeOpen((o) => !o);
+      } else if (key === 'c') {
+        soundEngine.playClick();
+        setAssistantOpen((o) => !o);
+      } else if (key === 'g') {
+        void handleSyncGo();
+      }
+    };
+    window.addEventListener('keydown', onKeyDown);
+    return () => window.removeEventListener('keydown', onKeyDown);
+  }, [handleCycleAccent, handleSyncGo]);
+
   const handleSelectProjectById = useCallback(
     (id: string) => {
       const found = projects.find((p) => p.id === id) || null;
-      if (found) setSelectedProject(found);
+      if (found) {
+        soundEngine.playClick();
+        setSelectedProject(found);
+      }
     },
     [projects]
   );
 
   const handleFilterBySkill = useCallback(
     (skill: string) => {
+      soundEngine.playClick();
       setVaultQuery(skill);
       notify(`Filtering Project Vault by "${skill}"`);
       const el = document.getElementById('vault');
@@ -102,15 +170,6 @@ export default function App() {
     },
     [notify]
   );
-
-  const handleSyncGo = useCallback(async () => {
-    const found = await syncNow();
-    if (found) {
-      notify('Go project detected & promoted live from GitHub!');
-    } else {
-      notify('Checked GitHub — no Go repo pushed yet (auto-watches on load).');
-    }
-  }, [notify, syncNow]);
 
   const goSyncProp = {
     detected: goRepoDetected,
@@ -124,39 +183,71 @@ export default function App() {
   return (
     <div className="bg-blueprint relative min-h-screen">
       <CursorAura />
+      <SectionRail />
 
       <Navbar
         isDark={isDark}
-        onToggleDark={() => setIsDark((d) => !d)}
+        onToggleDark={() => {
+          soundEngine.playClick();
+          setIsDark((d) => !d);
+        }}
         accent={accent}
         onChangeAccent={(a) => {
+          soundEngine.playClick();
           setAccent(a);
           notify(`Theme accent set to ${a.toUpperCase()}`);
         }}
-        onOpenCommand={() => setCommandOpen(true)}
-        onOpenResume={() => setResumeOpen(true)}
+        onOpenCommand={() => {
+          soundEngine.playClick();
+          setCommandOpen(true);
+        }}
+        onOpenResume={() => {
+          soundEngine.playClick();
+          setResumeOpen(true);
+        }}
+        soundEnabled={soundEnabled}
+        onToggleSound={handleToggleSound}
       />
 
       <main>
         <HeroSection
-          onOpenCommand={() => setCommandOpen(true)}
-          onOpenResume={() => setResumeOpen(true)}
+          onOpenCommand={() => {
+            soundEngine.playClick();
+            setCommandOpen(true);
+          }}
+          onOpenResume={() => {
+            soundEngine.playClick();
+            setResumeOpen(true);
+          }}
           onSelectProject={handleSelectProjectById}
         />
         <BentoAboutSection onFilterBySkill={handleFilterBySkill} />
         <FlagshipProjects
           projects={projects}
-          onSelectProject={setSelectedProject}
+          onSelectProject={(p) => {
+            soundEngine.playClick();
+            setSelectedProject(p);
+          }}
           goSync={goSyncProp}
         />
         <ProjectVault
           projects={projects}
-          onSelectProject={setSelectedProject}
+          onSelectProject={(p) => {
+            soundEngine.playClick();
+            setSelectedProject(p);
+          }}
           query={vaultQuery}
           onQueryChange={setVaultQuery}
         />
+        <ArchitecturePlayground />
         <JourneySection />
-        <ContactSection onNotify={notify} />
+        <ContactSection
+          onNotify={notify}
+          onOpenShortcuts={() => {
+            soundEngine.playClick();
+            setShortcutsOpen(true);
+          }}
+        />
       </main>
 
       {/* Deep-Dive Project Dossier Modal */}
@@ -172,6 +263,12 @@ export default function App() {
         onClose={() => setResumeOpen(false)}
         projects={projects}
         onNotify={notify}
+      />
+
+      {/* Keyboard Power Shortcuts Overlay */}
+      <ShortcutsModal
+        open={shortcutsOpen}
+        onClose={() => setShortcutsOpen(false)}
       />
 
       {/* Global Ctrl+K Command Palette */}

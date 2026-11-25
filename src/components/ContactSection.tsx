@@ -16,11 +16,15 @@ import { SpotlightCard } from './SpotlightCard';
 
 interface ContactSectionProps {
   onNotify: (msg: string) => void;
+  onOpenShortcuts: () => void;
 }
 
 const TOPICS = ['SWE Internship', 'AI / RAG Project', 'DevOps / Cloud', 'Collaboration'];
 
-export const ContactSection: React.FC<ContactSectionProps> = ({ onNotify }) => {
+export const ContactSection: React.FC<ContactSectionProps> = ({
+  onNotify,
+  onOpenShortcuts,
+}) => {
   const [copied, setCopied] = useState(false);
   const [name, setName] = useState('');
   const [senderEmail, setSenderEmail] = useState('');
@@ -61,7 +65,7 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ onNotify }) => {
           className="mb-10"
         >
           <span className="font-mono text-xs font-semibold uppercase tracking-widest text-accent">
-            05 // INITIATE TRANSMISSION
+            06 // INITIATE TRANSMISSION
           </span>
           <h2 className="mt-2 font-[family-name:var(--font-display)] text-3xl font-extrabold tracking-tight text-[var(--text-primary)] sm:text-4xl">
             Let&apos;s Build Something Unforgettable
@@ -282,9 +286,13 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ onNotify }) => {
             >
               <Github className="h-3.5 w-3.5" />
             </a>
-            <span className="hidden rounded-lg border border-[var(--border-subtle)] px-2.5 py-1 font-mono text-[11px] text-[var(--text-muted)] sm:inline-block">
-              Tip: Press <strong className="text-accent">Ctrl+K</strong> anywhere
-            </span>
+            <button
+              type="button"
+              onClick={onOpenShortcuts}
+              className="hidden cursor-pointer rounded-lg border border-[var(--border-subtle)] px-2.5 py-1 font-mono text-[11px] text-[var(--text-muted)] transition-colors hover:border-accent hover:text-accent sm:inline-block"
+            >
+              Shortcuts: <strong className="text-accent">?</strong> · <strong className="text-accent">Ctrl+K</strong>
+            </button>
             <a
               href="#top"
               className="inline-flex items-center gap-1.5 rounded-xl border border-[var(--border-subtle)] px-3 py-1.5 font-mono text-xs text-[var(--text-secondary)] transition-colors hover:border-accent hover:text-accent"

@@ -17,3 +17,4 @@ React 19 · TypeScript · Vite 6 · Tailwind CSS v4 · Framer Motion · Lucide I
 npm install
 npm run dev
 ```
+
