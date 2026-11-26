@@ -34,7 +34,7 @@ const INITIAL_LINES: TermLine[] = [
   { type: 'accent', text: '✓ Connected to github.com/shubh-aarambh (Bengaluru, IN)' },
   {
     type: 'out',
-    text: '  20 public repos · 5 live deploys · Go 1.22 + TS + AWS EKS',
+    text: '  20 public repos · 6 live deploys · Go 1.22 + TS + AWS EKS + Railway',
   },
   {
     type: 'out',
@@ -61,6 +61,16 @@ const LIVE_DEPLOY_BAR = [
     name: 'Reserve-Space',
     platform: 'MERN · Vercel',
     url: 'https://reserve-space.vercel.app/',
+  },
+  {
+    name: 'Library Manager',
+    platform: 'Spring · Railway',
+    url: 'https://athenaeum-library-production.up.railway.app',
+  },
+  {
+    name: 'Portfolio OS',
+    platform: 'React 19 · Pages',
+    url: 'https://shubh-aarambh.github.io/',
   },
   {
     name: 'ScreenTop AI',

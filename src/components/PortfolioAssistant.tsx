@@ -104,14 +104,34 @@ export const PortfolioAssistant: React.FC<PortfolioAssistantProps> = ({
       };
     }
 
-    if (q.includes('reserve') || q.includes('room') || q.includes('library') || q.includes('spring') || q.includes('java')) {
+    if (q.includes('reserve') || q.includes('room') || q.includes('library') || q.includes('spring') || q.includes('java') || q.includes('railway')) {
       const reserve = findProject('reserve-space');
       const library = findProject('library-spring');
       return {
-        text: `Both Reserve-Space (live MERN campus room/lab booking platform with JWT & Admin Dashboard on Vercel) and Library Manager (Spring Boot + JPA + custom JPQL inner-join queries + H2) are highlighted in the Flagship section with interactive widgets!`,
+        text: `Both Reserve-Space (live MERN campus room/lab booking platform with JWT & Admin Dashboard on Vercel) and Library Manager (Spring Boot + JPA + custom JPQL inner-join queries + H2, deployed live on Railway) are highlighted in the Flagship section with interactive widgets and live deployments!`,
         actions: [
           ...(reserve ? [{ label: 'Inspect Reserve-Space', onClick: () => onSelectProject(reserve) }] : []),
           ...(library ? [{ label: 'Inspect Library Manager', onClick: () => onSelectProject(library) }] : []),
+          {
+            label: 'Open Railway App',
+            onClick: () =>
+              window.open('https://athenaeum-library-production.up.railway.app', '_blank', 'noreferrer'),
+          },
+        ],
+      };
+    }
+
+    if (q.includes('portfolio') || q.includes('this site') || q.includes('shubh-aarambh.github.io')) {
+      const portfolio = findProject('portfolio-site');
+      return {
+        text: `You're currently viewing Shubh's Developer Portfolio OS! Built with React 19, TypeScript, and Vite 6, it features 6 interactive system simulators, live GitHub GraphQL telemetry, sound synthesizer, and automated CI/CD deployment via GitHub Actions.`,
+        actions: [
+          ...(portfolio ? [{ label: 'Inspect Portfolio Project', onClick: () => onSelectProject(portfolio) }] : []),
+          {
+            label: 'View GitHub Repo',
+            onClick: () =>
+              window.open('https://github.com/shubh-aarambh/shubh-aarambh.github.io', '_blank', 'noreferrer'),
+          },
         ],
       };
     }

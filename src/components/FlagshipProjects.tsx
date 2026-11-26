@@ -25,6 +25,8 @@ interface FlagshipProjectsProps {
 
 function getLiveBadgeLabel(liveUrl: string): string {
   if (liveUrl.includes('onrender.com')) return 'LIVE ON RENDER';
+  if (liveUrl.includes('up.railway.app') || liveUrl.includes('railway.app')) return 'LIVE ON RAILWAY';
+  if (liveUrl.includes('github.io')) return 'LIVE ON GITHUB PAGES';
   if (liveUrl.includes('vercel.app')) return 'LIVE ON VERCEL';
   if (liveUrl.includes('amazonaws.com')) return 'LIVE ON AWS EKS';
   return 'LIVE DEPLOY';

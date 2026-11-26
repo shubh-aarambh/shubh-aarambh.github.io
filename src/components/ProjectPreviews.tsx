@@ -488,7 +488,15 @@ const LibraryPreview: React.FC = () => {
           <BookOpen className="h-3.5 w-3.5" />
           SPRING JPA · JPQL INSPECTOR
         </span>
-        <div className="flex gap-1">
+        <div className="flex items-center gap-1.5">
+          <a
+            href="https://athenaeum-library-production.up.railway.app"
+            target="_blank"
+            rel="noreferrer"
+            className="rounded bg-emerald-500/20 px-2 py-0.5 text-[10px] font-semibold text-emerald-300 hover:bg-emerald-500/30 transition-colors"
+          >
+            Railway Live ↗
+          </a>
           {(['join', 'authors'] as const).map((tab) => (
             <button
               key={tab}
@@ -528,8 +536,16 @@ const LibraryPreview: React.FC = () => {
         ))}
       </div>
 
-      <div className="truncate rounded-md bg-black/40 px-2.5 py-1 text-[10px] text-emerald-400">
-        ✓ {current.footer}
+      <div className="flex items-center justify-between truncate rounded-md bg-black/40 px-2.5 py-1 text-[10px]">
+        <span className="text-emerald-400">✓ {current.footer}</span>
+        <a
+          href="https://athenaeum-library-production.up.railway.app"
+          target="_blank"
+          rel="noreferrer"
+          className="shrink-0 font-semibold text-accent underline decoration-accent/40 hover:decoration-accent"
+        >
+          Railway ↗
+        </a>
       </div>
     </div>
   );
