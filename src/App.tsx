@@ -2,9 +2,11 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { CheckCircle2 } from 'lucide-react';
 import { PROFILE, ProjectItem } from './data/portfolioData';
+import { DimensionMode } from './data/entertainmentData';
 import { useLiveGoProject } from './hooks/useLiveGoProject';
 import { AccentTheme, Navbar } from './components/Navbar';
 import { HeroSection } from './components/HeroSection';
+import { EntertainmentSection } from './components/EntertainmentSection';
 import { BentoAboutSection } from './components/BentoAboutSection';
 import { FlagshipProjects } from './components/FlagshipProjects';
 import { ProjectVault } from './components/ProjectVault';
@@ -27,6 +29,7 @@ export default function App() {
     useLiveGoProject();
   const [isDark, setIsDark] = useState(true);
   const [accent, setAccent] = useState<AccentTheme>('cyan');
+  const [dimension, setDimension] = useState<DimensionMode>('dual');
   const [soundEnabled, setSoundEnabled] = useState(false);
   const [selectedProject, setSelectedProject] = useState<ProjectItem | null>(null);
   const [commandOpen, setCommandOpen] = useState(false);
@@ -61,6 +64,20 @@ export default function App() {
   useEffect(() => {
     document.documentElement.setAttribute('data-accent', accent);
   }, [accent]);
+
+  useEffect(() => {
+    document.documentElement.setAttribute('data-dimension', dimension);
+  }, [dimension]);
+
+  const handleCycleDimension = useCallback(() => {
+    const DIM_ORDER: DimensionMode[] = ['dual', 'tech', 'entertainment'];
+    setDimension((curr) => {
+      const next = DIM_ORDER[(DIM_ORDER.indexOf(curr) + 1) % DIM_ORDER.length];
+      soundEngine.playSuccess();
+      notify(`Persona dimension: ${next.toUpperCase()}`);
+      return next;
+    });
+  }, [notify]);
 
   const handleToggleSound = useCallback(() => {
     setSoundEnabled((prev) => {
@@ -133,6 +150,8 @@ export default function App() {
       } else if (key === 't') {
         soundEngine.playClick();
         setIsDark((d) => !d);
+      } else if (key === 'd') {
+        handleCycleDimension();
       } else if (key === 'a') {
         handleCycleAccent();
       } else if (key === 'r') {
@@ -207,10 +226,22 @@ export default function App() {
         }}
         soundEnabled={soundEnabled}
         onToggleSound={handleToggleSound}
+        dimension={dimension}
+        onChangeDimension={(dim) => {
+          soundEngine.playSuccess();
+          setDimension(dim);
+          notify(`Persona dimension set to ${dim.toUpperCase()}`);
+        }}
       />
 
       <main>
         <HeroSection
+          dimension={dimension}
+          onChangeDimension={(dim) => {
+            soundEngine.playSuccess();
+            setDimension(dim);
+            notify(`Persona dimension set to ${dim.toUpperCase()}`);
+          }}
           onOpenCommand={() => {
             soundEngine.playClick();
             setCommandOpen(true);
@@ -221,6 +252,7 @@ export default function App() {
           }}
           onSelectProject={handleSelectProjectById}
         />
+        <EntertainmentSection />
         <BentoAboutSection onFilterBySkill={handleFilterBySkill} />
         <FlagshipProjects
           projects={projects}

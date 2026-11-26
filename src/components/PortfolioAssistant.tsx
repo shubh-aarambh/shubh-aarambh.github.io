@@ -34,9 +34,9 @@ interface ChatMessage {
 }
 
 const STARTER_PROMPTS = [
+  'Show the Two Sides of Shubh (Tech × Entertainment)',
   'Why hire Shubh?',
   'Explain AWS EKS StudyTrack',
-  'Show AI & RAG projects',
   'Tell me about Reserve-Space & Library Manager',
   'How do I connect on LinkedIn?',
 ];
@@ -86,6 +86,23 @@ export const PortfolioAssistant: React.FC<PortfolioAssistantProps> = ({
       return {
         text: `Shubh's interactive ATS-ready resume summarizes his Scaler School of Technology CS degree, flagship AWS EKS / AI Agent / Full-Stack systems, and core stack — ready to print or save as PDF.`,
         actions: [{ label: 'Open Printable Resume', onClick: onOpenResume }],
+      };
+    }
+
+    if (q.includes('side') || q.includes('entertainment') || q.includes('brand') || q.includes('creative') || q.includes('cinema') || q.includes('music') || q.includes('synth')) {
+      const screentop = findProject('screentop-ai');
+      return {
+        text: `Shubh is engineered as a complete brand package with two synchronized dimensions: Side A is the Tech Architect (distributed Go 1.22, AWS EKS, Playwright LLM agents, C++), and Side B is the Entertainment & Creative Producer (ScreenTop AI cinema intelligence, native Web Audio synthesizers, and keynote storytelling). Toggle the dimension pills at the top or press 'D' to explore both!`,
+        actions: [
+          ...(screentop ? [{ label: 'Inspect ScreenTop AI', onClick: () => onSelectProject(screentop) }] : []),
+          {
+            label: 'Open Creative Studio',
+            onClick: () => {
+              const el = document.getElementById('entertainment');
+              if (el) el.scrollIntoView({ behavior: 'smooth' });
+            },
+          },
+        ],
       };
     }
 

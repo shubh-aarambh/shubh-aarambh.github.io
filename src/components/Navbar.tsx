@@ -1,19 +1,23 @@
 import React, { useEffect, useState } from 'react';
 import { motion, useScroll, useSpring } from 'framer-motion';
 import {
+  Clapperboard,
   Command,
   FileText,
   Github,
   Linkedin,
   Menu,
   Moon,
+  Sparkles,
   Sun,
   Terminal,
   Volume2,
   VolumeX,
   X,
+  Zap,
 } from 'lucide-react';
 import { PROFILE } from '../data/portfolioData';
+import { DimensionMode } from '../data/entertainmentData';
 import { ScrambleText } from './ScrambleText';
 
 export type AccentTheme = 'cyan' | 'amber' | 'emerald' | 'violet';
@@ -27,11 +31,14 @@ interface NavbarProps {
   onOpenResume: () => void;
   soundEnabled: boolean;
   onToggleSound: () => void;
+  dimension: DimensionMode;
+  onChangeDimension: (dim: DimensionMode) => void;
 }
 
 const NAV_LINKS = [
   { label: 'DNA', href: '#about' },
   { label: 'Flagship', href: '#flagship' },
+  { label: 'Studio', href: '#entertainment' },
   { label: 'Vault', href: '#vault' },
   { label: 'Sandbox', href: '#architecture' },
   { label: 'Journey', href: '#journey' },
@@ -54,6 +61,8 @@ export const Navbar: React.FC<NavbarProps> = ({
   onOpenResume,
   soundEnabled,
   onToggleSound,
+  dimension,
+  onChangeDimension,
 }) => {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -156,6 +165,49 @@ export const Navbar: React.FC<NavbarProps> = ({
 
           {/* Controls */}
           <div className="flex items-center gap-2">
+            {/* Dimension Mode Quick Selector */}
+            <div className="hidden items-center rounded-xl border border-white/15 bg-white/[0.04] p-0.5 sm:flex">
+              <button
+                type="button"
+                onClick={() => onChangeDimension('tech')}
+                className={`cursor-pointer inline-flex items-center gap-1 rounded-lg px-2.5 py-1 font-mono text-[11px] font-bold transition-all ${
+                  dimension === 'tech'
+                    ? 'bg-cyan-500 text-slate-950 shadow-sm'
+                    : 'text-slate-400 hover:text-white'
+                }`}
+                title="Switch to Tech Architect Mode"
+              >
+                <Zap className="h-3 w-3" />
+                Tech
+              </button>
+              <button
+                type="button"
+                onClick={() => onChangeDimension('entertainment')}
+                className={`cursor-pointer inline-flex items-center gap-1 rounded-lg px-2.5 py-1 font-mono text-[11px] font-bold transition-all ${
+                  dimension === 'entertainment'
+                    ? 'bg-gradient-to-r from-rose-500 to-amber-500 text-white shadow-sm'
+                    : 'text-slate-400 hover:text-white'
+                }`}
+                title="Switch to Entertainment & Creative Mode"
+              >
+                <Clapperboard className="h-3 w-3" />
+                Creative
+              </button>
+              <button
+                type="button"
+                onClick={() => onChangeDimension('dual')}
+                className={`cursor-pointer inline-flex items-center gap-1 rounded-lg px-2.5 py-1 font-mono text-[11px] font-bold transition-all ${
+                  dimension === 'dual'
+                    ? 'bg-gradient-to-r from-cyan-400 to-pink-500 text-slate-950 font-extrabold shadow-sm'
+                    : 'text-slate-400 hover:text-white'
+                }`}
+                title="Switch to Dual-Spectrum Mode"
+              >
+                <Sparkles className="h-3 w-3" />
+                Dual
+              </button>
+            </div>
+
             {/* Accent Color Dots */}
             <div
               className="hidden items-center gap-1.5 rounded-xl border border-[var(--border-subtle)] px-2 py-1.5 lg:flex"

@@ -27,3 +27,4 @@ if (fs.existsSync(pdf)) {
 try {
   fs.rmSync(userDir, { recursive: true, force: true });
 } catch (e) {}
+

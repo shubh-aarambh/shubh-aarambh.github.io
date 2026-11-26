@@ -11,6 +11,7 @@ const SHORTCUTS = [
   { keys: ['Ctrl', 'K'], desc: 'Open Global Command Palette' },
   { keys: ['R'], desc: 'Open Formal Resume / Download PDF' },
   { keys: ['T'], desc: 'Toggle Obsidian Dark / Daylight Light Mode' },
+  { keys: ['D'], desc: 'Switch Persona Dimension (Tech / Entertainment / Dual)' },
   { keys: ['A'], desc: 'Cycle Accent Palette (Cyan / Amber / Emerald / Violet)' },
   { keys: ['C'], desc: 'Open Ask Shubh AI Copilot' },
   { keys: ['G'], desc: 'Sync GitHub Now for Go Repository Push' },
